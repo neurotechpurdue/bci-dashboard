@@ -30,13 +30,7 @@ const oscServer = new osc.Server(OSC_PORT, '127.0.0.1');
 oscServer.on('message', data => handleMessage(data)); //
 let interval;
 
-const storage = new Storage({
-  projectId: process.env.PROJECT_ID,
-  credentials: {
-    client_email: process.env.CLIENT_EMAIL,
-    private_key: process.env.PRIVATE_KEY
-  }
-});
+const storage = new Storage();
 
 console.log("storage:" + storage);
 

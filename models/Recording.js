@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 
 const Recording = new mongoose.Schema(
   {
-    data: [],
+    data: String,
     experiment_id: String,
     subject: String,
+    author: String,
   },
   {
     timestamps: {

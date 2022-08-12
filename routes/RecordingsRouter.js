@@ -4,6 +4,10 @@ const RecordingController = require("../controllers/recordingController");
 
 const router = express.Router();
 router.get("/recordings/:_id", RecordingController.getRecordingById);
+router.get(
+  "/experiment/:experiment_id/recordings",
+  RecordingController.getRecordingsByExperimentId
+);
 
 router.post("/recordings", RecordingController.saveRecording);
 router.post("/recordings/start", RecordingController.startRecording);

@@ -121,34 +121,50 @@ const oscServer = new osc.Server(OSC_PORT, "127.0.0.1", () => {
 });
 
 oscServer.on("message", (d) => {
-  var timeStamp = new Date();
+  console.log(`Message: ${d}`);
+  var timeStamp = Date.now();
   //format dta
-  if (d == data[0]) {
+  //send message to oscServer to close it.
+  if (d == "/close") {
     oscServer.close();
   }
-  data = [d, timeStamp];
+  //remove "openbci "
+  //ch1, ch2, ....
+  var channels = d.slice(1);
+  data =
+    channels[0] +
+    "," +
+    channels[1] +
+    "," +
+    channels[2] +
+    "," +
+    channels[3] +
+    "," +
+    timeStamp.toString();
   //if data folder has open file, then put data in there
-  if (!isDirEmpty("./data/")) {
-    //write to file
-    console.log("directory not empty");
-    var dataFile = "";
-    fs.readdirSync("./data/").forEach((file) => {
-      dataFile = file;
-    });
-    console.log(dataFile);
-    fs.appendFile(dataFile, data.toString(), (err) => {
-      if (err) {
-        console.log(err);
+  fs.readdir("./data/", function (err, files) {
+    if (err) {
+      // some sort of error
+    } else {
+      if (!files.length) {
+        // console.log("empty directory");
+        // directory appears to be empty, wait
       } else {
-        //TODO: Nothing was appended :'((((
-        // Get the file contents after the append operation
-        console.log("Appended!");
+        var dataFile = "";
+        fs.readdirSync("./data/").forEach((file) => {
+          dataFile = file;
+        });
+        // console.log(dataFile);
+        // console.log(JSON.stringify(data));
+        if (fs.existsSync("./data/" + dataFile)) {
+          fs.appendFileSync("./data/" + dataFile, data + "\n");
+        }
       }
-    });
-  }
+    }
+  });
+});
 
-  // console.log("message", data);
-}); //
+// console.log("message", data);
 // let interval;
 
 // // const storage = new Storage();

@@ -4,6 +4,9 @@ const Recording = new mongoose.Schema(
   {
     data: String,
     experiment_id: String,
+    configuration: String,
+    sample_rate: String,
+    trials: String, 
     subject: String,
     author: String,
   },

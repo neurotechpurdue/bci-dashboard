@@ -141,7 +141,8 @@ const startRecording = async (req, res) => {
 const getRecordingsByExperimentId = async (req, res) => {
   //Go over all recordings and select those with the experiment id
   let { experimentId } = req.body;
-  Recording.find({ experimentId: experimentId })
+  console.log(experimentId);
+  Recording.find({ experiment_id: experimentId })
     .then((response) => {
       return res.status(200).json(response);
     })

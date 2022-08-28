@@ -8,9 +8,11 @@ var fs = require("fs");
 
 dotenv.config();
 const recordingsRouter = require("./routes/RecordingsRouter");
+const experimentRouter = require("./routes/ExperimentRouter");
 app.use(cors());
 app.use(express.json());
 app.use("/api", recordingsRouter);
+app.use("/api", experimentRouter);
 
 const server = http.createServer(app);
 

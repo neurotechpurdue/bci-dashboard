@@ -13,6 +13,9 @@ app.use(cors());
 app.use(express.json());
 app.use("/api", recordingsRouter);
 app.use("/api", experimentRouter);
+app.get("/test", (req, res) => {
+  res.send(res.status(200).json("Application working!"));
+});
 
 const server = http.createServer(app);
 
@@ -43,8 +46,9 @@ io.on("connection", (socket) => {
     console.log("User Disconnected", socket.id);
   });
 });
+const port = process.env.PORT || 3001;
 
-server.listen(3001, () => {
+server.listen(port, () => {
   console.log("SERVER RUNNING on port 3001");
 });
 const mongoose = require("mongoose");
@@ -114,8 +118,6 @@ const osc = require("node-osc");
 // // setInterval(() => {
 // //   io.to("clock-room").emit("time", new Date());
 // // }, 1000);
-
-const port = 8000;
 
 const OSC_PORT = 12345;
 const oscServer = new osc.Server(OSC_PORT, "127.0.0.1", () => {

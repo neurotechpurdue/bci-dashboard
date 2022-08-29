@@ -68,7 +68,7 @@ const saveRecording = async (req, res) => {
       return res.status(400).json("Could not save to AWS");
     }
     console.log(data.Location);
-    // dataLocation = data.Location;
+    dataLocation = data.Location;
     // if (data) {
     //   console.log(
     //     "%s %s %s %s %s %s %s",
@@ -84,6 +84,7 @@ const saveRecording = async (req, res) => {
     //   // return res.status(200).json("Saved data to AWS and deleted temporary file.");
     // }
   });
+  console.log(dataLocation);
   recording = new Recording({
     data: dataLocation,
     experiment_id: experimentId,

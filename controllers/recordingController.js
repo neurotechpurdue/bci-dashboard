@@ -98,26 +98,23 @@ const saveRecording = async (req, res) => {
 
   if (recording != undefined) {
     console.log("saving recording...");
-    recording
-      .save()
-      .then((response) => {
-        console.log(" url saved to db ");
-        // return res.status(200).json(response);
-      })
-      .then(() => {
-        console.log(dataFile);
-        try {
-          const client = new new osc.Client("127.0.0.1", 12345)();
-          client.send("/close", 200, () => {
-            client.close();
-          });
-          fs.unlinkSync(dataFile);
-        } catch (err) {
-          console.log("could not delete file");
-        }
-        return res.status(200).json(dataLocation);
-      })
-      .catch((err) => console.log("Error in saving to S3 or db"));
+    recording.save().then((response) => {
+      console.log(" url saved to db ");
+      // return res.status(200).json(response);
+    });
+    // I think a then is not needed because we already have the recording in local memory (i.e in the recording variable)
+    console.log(dataFile);
+    try {
+      const client = new new osc.Client("127.0.0.1", 12345)();
+      client.send("/close", 200, () => {
+        client.close();
+      });
+      fs.unlinkSync(dataFile);
+    } catch (err) {
+      console.log("could not delete file");
+    }
+    console.log(dataLocation);
+    return res.status(200).send(dataLocation);
   }
 };
 

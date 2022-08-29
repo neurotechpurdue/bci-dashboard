@@ -113,8 +113,8 @@ const saveRecording = async (req, res) => {
     } catch (err) {
       console.log("could not delete file");
     }
-    console.log(dataLocation);
-    return res.status(200).send(dataLocation);
+    console.log("data location: " + dataLocation);
+    return res.status(200).json(`dataLocation: ${dataLocation}`))
   }
 };
 
@@ -123,6 +123,7 @@ const getRecordingById = async (req, res) => {
   Recording.findById(_id)
     .select("-_id -experiment_id")
     .then((response) => {
+      console.log(response);
       return res.status(200).json(response);
     })
     .catch((err) => {

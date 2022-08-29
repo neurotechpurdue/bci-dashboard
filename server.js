@@ -120,7 +120,7 @@ const osc = require("node-osc");
 // // }, 1000);
 
 const OSC_PORT = 12345;
-const oscServer = new osc.Server(OSC_PORT, "127.0.0.1", () => {
+const oscServer = new osc.Server(OSC_PORT, "http://ec2-35-173-122-231.compute-1.amazonaws.com", () => {
   console.log("osc server is listening");
 });
 

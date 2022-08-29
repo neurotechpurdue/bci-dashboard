@@ -69,6 +69,39 @@ const saveRecording = async (req, res) => {
     }
     console.log(data.Location);
     dataLocation = data.Location;
+
+    console.log(dataLocation);
+    recording = new Recording({
+      data: dataLocation,
+      experiment_id: experimentId,
+      configuration,
+      sample_rate: sampleRate,
+      trials,
+      subject,
+      author,
+    });
+    console.log(recording);
+
+    if (recording != undefined) {
+      console.log("saving recording...");
+      recording.save().then((response) => {
+        console.log(" url saved to db ");
+        // return res.status(200).json(response);
+      });
+      // I think a then is not needed because we already have the recording in local memory (i.e in the recording variable)
+      console.log(dataFile);
+      try {
+        const client = new new osc.Client("127.0.0.1", 12345)();
+        client.send("/close", 200, () => {
+          client.close();
+        });
+        fs.unlinkSync(dataFile);
+      } catch (err) {
+        console.log("could not delete file");
+      }
+      console.log("data location: " + dataLocation);
+      return res.status(200).json(data.Location);
+    }
     // if (data) {
     //   console.log(
     //     "%s %s %s %s %s %s %s",
@@ -84,38 +117,6 @@ const saveRecording = async (req, res) => {
     //   // return res.status(200).json("Saved data to AWS and deleted temporary file.");
     // }
   });
-  console.log(dataLocation);
-  recording = new Recording({
-    data: dataLocation,
-    experiment_id: experimentId,
-    configuration,
-    sample_rate: sampleRate,
-    trials,
-    subject,
-    author,
-  });
-  console.log(recording);
-
-  if (recording != undefined) {
-    console.log("saving recording...");
-    recording.save().then((response) => {
-      console.log(" url saved to db ");
-      // return res.status(200).json(response);
-    });
-    // I think a then is not needed because we already have the recording in local memory (i.e in the recording variable)
-    console.log(dataFile);
-    try {
-      const client = new new osc.Client("127.0.0.1", 12345)();
-      client.send("/close", 200, () => {
-        client.close();
-      });
-      fs.unlinkSync(dataFile);
-    } catch (err) {
-      console.log("could not delete file");
-    }
-    console.log("data location: " + dataLocation);
-    return res.status(200).json(`dataLocation: ${dataLocation}`))
-  }
 };
 
 const getRecordingById = async (req, res) => {

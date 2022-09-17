@@ -2,12 +2,13 @@ const Experiment = require("../models/Experiment");
 
 const getExperimentById = (req, res) => {
   let { _id } = req.params;
+  console.log("id: " + _id);
   Experiment.findById(_id)
     .then((response) => {
       return res.status(200).json(response);
     })
     .catch((err) => {
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: err.message });
     });
 };
 

@@ -10,6 +10,7 @@ router.get(
 );
 
 router.post("/recordings", RecordingController.saveRecording);
+router.get("/recordings/:_id/download", RecordingController.downloadRecording);
 router.post("/recordings/start", RecordingController.startRecording);
 module.exports = router;
 

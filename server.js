@@ -26,18 +26,17 @@ const io = new Server(server, {
   },
 });
 
-var data = [null, null];
+var data = null;
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-
-  var tweet = { user: "nodesource", text: "Hello, world!" };
-
-  // to make things interesting, have it send every second
-
+  var oldData = null;
   var interval2 = setInterval(function () {
-    socket.emit("openbci", data);
-    // data = null;
-  }, 1000);
+    if (!(oldData == data)) {
+      // if the old data is not equal to data, it means that fresh data has been produced
+      socket.emit("openbci", data);
+      oldData = data;
+    }
+  }, 20);
 
   socket.on("disconnect", () => {
     // clearInterval(interval);
@@ -120,7 +119,16 @@ const osc = require("node-osc");
 // // }, 1000);
 
 const OSC_PORT = 12345;
-const oscServer = new osc.Server(OSC_PORT, "35.173.122.231", () => {
+const environment = process.env.NODE_ENV;
+console.log(environment);
+var serverUrl;
+process.env.NODE_ENV == "production"
+  ? (serverUrl = process.env.SERVER_IP)
+  : (serverUrl = "127.0.0.1");
+
+//Why is the production ip working but not the local??
+console.log(serverUrl);
+const oscServer = new osc.Server(OSC_PORT, serverUrl, () => {
   console.log("osc server is listening");
 });
 

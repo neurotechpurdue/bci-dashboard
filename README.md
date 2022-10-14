@@ -1,1 +1,3 @@
-# Set the environment 
+# npm run development
+
+# npm run production

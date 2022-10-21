@@ -1,5 +1,4 @@
 const Game = require("../models/Game");
-const Game = require("../models/Game");
 
 const getGameById = (req, res) => {
   let { _id } = req.params;

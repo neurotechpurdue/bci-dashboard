@@ -106,10 +106,17 @@ const saveRecording = async (req, res) => {
         const client = new new osc.Client("127.0.0.1", 12345)();
         client.send("/close", 200, () => {
           client.close();
+          console.log("Closing OSC Client");
         });
-        fs.unlinkSync(dataFile);
       } catch (err) {
-        console.log("could not delete file");
+        console.log("could not close OSC Client");
+      }
+
+      try {
+        fs.unlinkSync(dataFile);
+        console.log("removed dataFile from folder");
+      } catch (err) {
+        console.log("Could not remove EEG file");
       }
       //return AWS url
       return res.status(200).json(data.Location);

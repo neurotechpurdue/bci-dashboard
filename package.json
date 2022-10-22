@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "nodemon server.js",
-    "production": "NODE_ENV=production nodemon server.js",
-    "development" : "NODE_ENV=development nodemon server.js"
+    "production": "cross-env NODE_ENV=production nodemon server.js",
+    "development": "cross-env NODE_ENV=development nodemon server.js"
   }
 }

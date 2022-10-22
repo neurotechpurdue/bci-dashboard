@@ -132,8 +132,22 @@ const oscServer = new osc.Server(OSC_PORT, serverUrl, () => {
   console.log("osc server is listening");
 });
 
+var checkMessage = true;
+
+//TODO: Check if data is streaming by checking if the message
+function isDataStreaming(d) {
+  if (checkMessage) {
+    console.log(d);
+    if (d) {
+      console.log("Data is streaming");
+      checkMessage = false;
+    }
+  }
+}
+
 oscServer.on("message", (d) => {
-  console.log(`Message: ${d}`);
+  isDataStreaming(d);
+  // console.log(`Message: ${d}`);
   var timeStamp = Date.now();
   //format dta
   //send message to oscServer to close it.
@@ -152,10 +166,19 @@ oscServer.on("message", (d) => {
     "," +
     channels[3] +
     "," +
+    channels[4] +
+    "," +
+    channels[5] +
+    "," +
+    channels[6] +
+    "," +
+    channels[7] +
+    "," +
     timeStamp.toString();
   //if data folder has open file, then put data in there
   fs.readdir("./data/", function (err, files) {
     if (err) {
+      console.log(err);
       // some sort of error
     } else {
       if (!files.length) {
@@ -168,7 +191,10 @@ oscServer.on("message", (d) => {
         });
         // console.log(dataFile);
         // console.log(JSON.stringify(data));
+        console.log("Exists data: " + fs.existsSync("./data/" + dataFile));
         if (fs.existsSync("./data/" + dataFile)) {
+          console.log("data appended to the dataFile");
+          console.log(dataFile);
           fs.appendFileSync("./data/" + dataFile, data + "\n");
         }
       }

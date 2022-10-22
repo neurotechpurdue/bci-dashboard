@@ -153,8 +153,10 @@ const getRecordingById = async (req, res) => {
 const startRecording = async (req, res) => {
   var date = Date.now();
   var filename = "./data/" + date.toString() + ".csv";
-  fs.writeFile(filename, "ch1, ch2, ch3, ch4, Timestamps\n", (err) =>
-    console.log(err)
+  fs.writeFile(
+    filename,
+    "ch1, ch2, ch3, ch4, ch5, ch6, ch7, ch8, Timestamps\n",
+    (err) => console.log(err)
   );
   return res.status(200).json("Recording start time has been written to file.");
 };

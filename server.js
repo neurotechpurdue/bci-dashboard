@@ -155,7 +155,6 @@ oscServer.on("message", (d) => {
     oscServer.close();
   }
   //remove "openbci "
-  //ch1, ch2, ....
   var channels = d.slice(1);
   data =
     channels[0] +
@@ -175,6 +174,13 @@ oscServer.on("message", (d) => {
     channels[7] +
     "," +
     timeStamp.toString();
+
+  //if data folder doesn't exists, create it:
+  console.log(fs.existsSync("./data"));
+  if (!fs.existsSync("./data")) {
+    console.log("made data folder");
+    fs.mkdirSync("./data");
+  }
   //if data folder has open file, then put data in there
   fs.readdir("./data/", function (err, files) {
     if (err) {

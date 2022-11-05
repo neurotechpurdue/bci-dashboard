@@ -67,11 +67,12 @@ const saveRecording = async (req, res) => {
   )
     return res.status(400).json({ error: "Invalid request body" });
 
+  var path = experimentId + "/" + fileName;
   // Upload EEG file to AWS S3
   var params = {
     Bucket: "nsp-eeg-data",
     Body: data,
-    Key: fileName,
+    Key: path,
   };
   let recording;
   let dataLocation;
